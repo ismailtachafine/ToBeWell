@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToBeWell</title>
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="fontawesome-free/css/all.min.css" />
+    <style>
+      .run-btn {
+        width: 50%;
+      }
+      @media only screen and (min-width: 760px) {
+        .run-btn {
+          width: 12%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-sm navbar-dark fixed-top mb-4"
+      style="background-color: #2c2a59;"
+    >
+      <a
+        class="navbar-brand"
+        style="font-family: 'Dancing Script', cursive;"
+        href="/"
+        >ToBeWell</a
+      >
+      <button
+        class="navbar-toggler d-lg-none"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapsibleNavId"
+        aria-controls="collapsibleNavId"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fa fa-list" aria-hidden="true"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a
+              class="nav-link"
+              href="/home"
+              style="font-family: 'Dancing Script', cursive;"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a
+              class="nav-link"
+              href="/login"
+              style="font-family: 'Dancing Script', cursive;"
+              >Login <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a
+              class="nav-link"
+              href="/signup"
+              style="font-family: 'Dancing Script', cursive;"
+              >Signup <span class="sr-only">(current)</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <section
+      class="mt-4 pt-4"
+      style="
+        background-color: #2c2a59;
+        height: auto;
+        clip-path: polygon(100% 0, 100% 82%, 50% 100%, 0 82%, 0 0);
+      "
+    >
+      <div class="container">
+        <div class="row pt-3">
+          <div class="col-md-5 pt-4 mt-2">
+            <img
+              src="img/home.png"
+              class="img-fluid mx-auto"
+              alt=""
+              srcset=""
+            />
+          </div>
+          <div class="col-md-7">
+            <h1
+              class="text-center text-white pt-5 mt-3"
+              style="font-family: 'Dancing Script', cursive;"
+            >
+              Talk to your psychologist
+            </h1>
+            <h4
+              class="text-center mt-3"
+              style="font-family: 'Dancing Script', cursive; color: #d8def2;"
+            >
+              <i
+                class="fa fa-quote-left mr-2"
+                aria-hidden="true"
+                style="color: #d8def2;"
+              ></i>
+              The most important thing in communication is to hear <br />
+              <br />
+              what isn't being said.
+              <i
+                class="fa fa-quote-right ml-2"
+                aria-hidden="true"
+                style="color: #d8def2;"
+              ></i>
+            </h4>
+            <div class="container">
+              <div class="row">
+                <div class="col text-center mt-4">
+                  <a
+                    type="button"
+                    class="btn mt-2"
+                    style="
+                      border-radius: 30px;
+                      background-color: #4a79d9;
+                      color: #d8def2;
+                    "
+                    href="/create"
+                  >
+                    Create a room
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 mx-auto" style="width: 50%;">
+            <div class="form-group">
+              <label
+                for=""
+                class="text-white mt-2 text-center"
+                style="
+                  font-size: 1.5rem;
+                  font-family: 'Dancing Script', cursive;
+                  color: #d8def2;
+                "
+              >
+                Join an existing room</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id="join_room"
+                style="width: 100%;"
+                class="mx-auto"
+                aria-describedby="helpId"
+                placeholder=""
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Enter the room's code
+              </small>
+              <div class="mx-auto run-btn" id="run-btn">
+                <button
+                  type="button"
+                  onclick="join()"
+                  class="btn mx-auto mt-2"
+                  style="
+                    background-color: #4a79d9;
+                    color: #d8def2;
+                    border-radius: 50px;
+                    width: 50px;
+                    height: 50px;
+                  "
+                >
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <script src="/jquery-3.2.1.min.js"></script>
+    <script src="/bootstrap.min.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>
