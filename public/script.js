@@ -6,7 +6,7 @@ const videoGrid = document.getElementById('video-grid')
 //   port: '3001'
 // })
 const myPeer = new Peer(undefined, {
-  host: "c4fb-196-117-12-99.ngrok-free.app",//here you can put your new URL like 420dac3efc08.ngrok.io
+  host: "17eb-196-117-12-99.ngrok-free.app",//here you can put your new URL like 420dac3efc08.ngrok.io
 });
 let myVideoStream;
 const myVideo = document.createElement('video')
@@ -177,17 +177,50 @@ let recordedChunks = [];
 let isRecording = false;
 
 
-function toggleRecording() {
+// function toggleRecording() {
+//   if (!isRecording) {
+//     startRecordingWithAudio();
+//     isRecording = true;
+//     startRecordingButton();
+//   } else {
+//     stopRecordingAndDownload();
+//     isRecording = false;
+//     stopRecordingButton();
+//   }
+// }
+
+async function toggleRecording() {
   if (!isRecording) {
-    startRecordingWithAudio();
-    isRecording = true;
-    startRecordingButton();
+    try {
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const combinedStream = new MediaStream();
+
+      screenStream.getVideoTracks().forEach(track => {
+        combinedStream.addTrack(track);
+      });
+
+      myVideoStream.getAudioTracks().forEach(track => {
+        combinedStream.addTrack(track);
+      });
+
+      mediaRecorder = new MediaRecorder(combinedStream);
+      recordedChunks = []; // Clear the recorded chunks array
+      mediaRecorder.ondataavailable = handleDataAvailable;
+      mediaRecorder.start();
+
+      isRecording = true;
+      startRecordingButton();
+    } catch (err) {
+      console.error('Error accessing screen:', err);
+      // Handle errors, show a message to the user, etc.
+    }
   } else {
-    stopRecordingAndDownload();
+    mediaRecorder.stop();
     isRecording = false;
     stopRecordingButton();
   }
-}
+} //ADDED
+
 
 function startRecordingWithAudio() {
   const combinedStream = new MediaStream();
@@ -205,9 +238,12 @@ function startRecordingWithAudio() {
   mediaRecorder.start();
 }
 
+
+
 function stopRecordingAndDownload() {
   mediaRecorder.stop();
 }
+
 
 const startRecordingButton = () => {
 
@@ -235,6 +271,7 @@ function handleDataAvailable(event) {
   recordedChunks.push(event.data);
   downloadRecording();
 }
+
 
 function downloadRecording() {
   const blob = new Blob(recordedChunks, { type: 'video/mp4' });

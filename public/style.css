@@ -61,3 +61,8 @@ h2 {
   p {
     margin-top: 15px;
   }
+
+  .error-message {
+    color: red;
+  }
+  

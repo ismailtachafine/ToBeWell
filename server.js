@@ -79,7 +79,8 @@ app.post("/signup", async (req, res) => {
   // Check if the user already exists in the database
   const existinguser = await collection.findOne({email: data.email});
   if (existinguser) {
-      res.send("Email already exists. Please choose a different email.");
+      // res.send("Email already exists. Please choose a different email.");
+      res.render("signup", { error: "Email already exists. Please choose a different email." });
   }else {    
       // Hash the password using bcrypt
       const saltRounds = 10; // Number of salt rounds for bcrypt
@@ -97,19 +98,22 @@ app.post("/login", async (req, res) => {
   try {
       const check = await collection.findOne({ email: req.body.email });
       if (!check) {
-          res.send("Email cannot be found")
+          // res.send("Email cannot be found")
+          res.render("login", { error: "Email cannot be found" });
       }
       // Compare the hashed password from the database with the plaintext password
       const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
       if (!isPasswordMatch) {
-          res.send("Wrong Password");
+          // res.send("Wrong Password");
+          res.render("login", { error: "Wrong Password" });
       }
       else {
           res.redirect("/home");
       }
   }
   catch {
-      res.send("Wrong Details");
+      // res.send("Wrong Details");
+      res.render("login", { error: "Wrong Details" });
   }
 });
 

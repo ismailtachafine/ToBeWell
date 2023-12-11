@@ -18,9 +18,15 @@
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <% if (typeof error !== 'undefined') { %>
+                    <p class="error-message"><%= error %></p>
+                <% } %>
             </div>
+
             <button type="submit" class="submit-btn">Login</button>
         </form>
+
         <p>Need to create an account? <a href="/signup">Signup</a></p>
     </div>
 </body>
