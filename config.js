@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const connect = mongoose.connect("mongodb://localhost:27017/tobewell");
+// const connect = mongoose.connect("mongodb://localhost:27017/tobewell");
+const connect = mongoose.connect("mongodb+srv://ismailtachafine:Vinlandsaga@cluster0.nefojgh.mongodb.net/tobewell?retryWrites=true&w=majority");
 
 // Check database connected or not
 connect.then(() => {
