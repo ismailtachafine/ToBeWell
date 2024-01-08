@@ -1,13 +1,13 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
-// const myPeer = new Peer(undefined, {
-//   path: '/peerjs',
-//   host: '/',
-//   port: '3001'
-// })
 const myPeer = new Peer(undefined, {
-  host: "b869-105-73-96-62.ngrok-free.app",//here you can put your new URL like 420dac3efc08.ngrok.io
-});
+  path: '/peerjs',
+  host: '/',
+  port: '3001'
+})
+// const myPeer = new Peer(undefined, {
+//   host: "b869-105-73-96-62.ngrok-free.app",//here you can put your new URL like 420dac3efc08.ngrok.io
+// });
 let myVideoStream;
 const myVideo = document.createElement('video')
 myVideo.muted = true;
