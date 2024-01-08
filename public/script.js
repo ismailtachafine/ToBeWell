@@ -6,8 +6,9 @@ const videoGrid = document.getElementById('video-grid')
 //   port: '3001'
 // })
 const myPeer = new Peer(undefined, {
-  host: "b869-105-73-96-62.ngrok-free.app",//here you can put your new URL like 420dac3efc08.ngrok.io
+  host: "faa6-105-73-96-62.ngrok-free.app",//here you can put your new URL like 420dac3efc08.ngrok.io
 });
+
 let myVideoStream;
 const myVideo = document.createElement('video')
 myVideo.muted = true;
@@ -39,17 +40,17 @@ navigator.mediaDevices.getUserMedia({
       text.val('')
     }
   });
-  // socket.on("createMessage", message => {
-  //   // $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
-  //   $("ul").append(`<li class="message"><b>${req.body.lastname}</b><br/>${message}</li>`);
-  //   scrollToBottom()
-  // })
-  socket.on("createMessage", data => {
-    const { message, userData } = data;
-    console.log(userData); // Check if userData is printed correctly
-    $("ul").append(`<li class="message"><b>${userData.lastName}</b><br/>${message}</li>`);
-    scrollToBottom();
+  socket.on("createMessage", message => {
+    $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
+    // $("ul").append(`<li class="message"><b>${req.body.lastname}</b><br/>${message}</li>`);
+    scrollToBottom()
   })
+  // socket.on("createMessage", data => {
+  //   const { message, userData } = data;
+  //   console.log(userData); // Check if userData is printed correctly
+  //   $("ul").append(`<li class="message"><b>${data.lastName}</b><br/>${message}</li>`);
+  //   scrollToBottom();
+  // })
 })
 
 socket.on('user-disconnected', userId => {

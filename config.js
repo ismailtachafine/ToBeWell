@@ -11,7 +11,7 @@ connect.then(() => {
 });
 
 // Create Schema
-const Loginschema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     firstname: {
         type:String,
         required: true
@@ -27,10 +27,18 @@ const Loginschema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    role: {
+        type: String,
+        default: "patient"
+    },
 });
 
 // Collection part
-const collection = new mongoose.model("users", Loginschema);
+const collection = new mongoose.model("users", UserSchema);
 
 module.exports = collection;

@@ -22,16 +22,16 @@ app.get("/create", (req, res) => {
   res.redirect(`/create_room/${uuidV4()}`)
 })
 
-app.get("/create_room/:new_room", (req, res) => {
-  res.render("new_room", { roomId: req.params.new_room });
+app.get('/create_room/:new_room', (req, res) => {
+  res.render('new_room', { roomId: req.params.new_room });
 });
 
-app.get("/rooms/:room", (req, res) => {
+app.get('/rooms/:room', (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
 
 // @route
-app.get("/home", (req, res) => {
+app.get('/home', (req, res) => {
   res.render("home");
 });
 
@@ -51,12 +51,13 @@ io.on('connection', socket => {
   })
 })
 
+
 // Convert data into json format
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("welcome");
 });
 
 app.get("/signup", (req, res) => {
@@ -73,7 +74,8 @@ app.post("/signup", async (req, res) => {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      confpassword: req.body.confpassword
   }
 
   // Check if the user already exists in the database
@@ -81,6 +83,8 @@ app.post("/signup", async (req, res) => {
   if (existinguser) {
       // res.send("Email already exists. Please choose a different email.");
       res.render("signup", { error: "Email already exists. Please choose a different email." });
+  }if (data.password != data.confpassword){
+      res.render("signup", { error: "The passwords don't match." });
   }else {    
       // Hash the password using bcrypt
       const saltRounds = 10; // Number of salt rounds for bcrypt
@@ -121,3 +125,4 @@ const port = 3000;
 server.listen(process.env.PORT||port, () => {
   console.log(`Server running on Port: ${port}`);
 })
+
