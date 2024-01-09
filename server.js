@@ -137,6 +137,7 @@ app.get("/home", async (req, res) => {
 app.get('/rooms/:room', (req, res) => {
   const firstname = req.session.firstname;
   const lastname = req.session.lastname;
+  console.log(firstname, lastname);
   res.render("room", { roomId: req.params.room, firstname, lastname });
 });
 
