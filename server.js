@@ -116,7 +116,7 @@ app.post("/login", async (req, res) => {
           res.render("login", { error: "Wrong Password" });
       }
       else {
-          res.redirect("/home");
+          // res.redirect("/home");
           res.render("home", { firstname: check.firstname, lastname: check.lastname });
       }
   }
