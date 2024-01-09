@@ -30,11 +30,6 @@ app.get('/rooms/:room', (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
 
-// @route
-app.get('/home', (req, res) => {
-  res.render("home");
-});
-
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
@@ -116,8 +111,8 @@ app.post("/login", async (req, res) => {
           res.render("login", { error: "Wrong Password" });
       }
       else {
-          // res.redirect("/home");
-          res.render("home", { firstname: check.firstname, lastname: check.lastname });
+          res.redirect("/home");
+          // res.render("home", { firstname: check.firstname, lastname: check.lastname });
       }
   }
   catch {
@@ -133,8 +128,9 @@ app.get("/home", async (req, res) => {
       // Handle the case when the user is not found
       res.render("login", { error: "User not found" });
     }
-
-    res.render("home", { firstname: user.firstname, lastname: user.lastname });
+    else{
+      res.render("home", { firstname: user.firstname, lastname: user.lastname });
+    }
   } catch (error) {
     // Handle any error that occurs during the database query
     console.error(error);
