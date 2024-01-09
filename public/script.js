@@ -44,7 +44,6 @@ navigator.mediaDevices.getUserMedia({
 
   socket.on("createMessage", (firstname, lastname, message) => {
     $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
-    console.log(firstname, lastname, message);
     scrollToBottom();
   });
 })
