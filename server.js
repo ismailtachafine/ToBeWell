@@ -128,9 +128,9 @@ app.get("/home", async (req, res) => {
       // Handle the case when the user is not found
       res.render("login", { error: "User not found" });
     }
-    else{
-      res.render("home", { firstname: user.firstname, lastname: user.lastname });
-    }
+    // else{
+    //   res.render("home", { firstname: user.firstname, lastname: user.lastname });
+    // }
   } catch (error) {
     // Handle any error that occurs during the database query
     console.error(error);
