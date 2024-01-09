@@ -14,6 +14,15 @@ const myVideo = document.createElement('video')
 myVideo.muted = true;
 const peers = {}
 
+
+io.on('connection', socket => {
+  socket.on('createMessage', (firstname, lastname, message) => {
+    // Process the message and emit it back to the clients
+    io.emit('newMessage', { firstname, lastname, message });
+  });
+});
+
+
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true

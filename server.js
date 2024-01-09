@@ -17,7 +17,7 @@ const session = require('express-session');
 app.use(session({
   secret: '0007',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 }));
 
 app.use('/peerjs', peerServer);
