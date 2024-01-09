@@ -135,11 +135,26 @@ app.get("/home", async (req, res) => {
   }
 });
 
+// app.get('/rooms/:room', (req, res) => {
+//   const firstname = req.session.firstname;
+//   const lastname = req.session.lastname;
+//   console.log(firstname, lastname);
+//   res.render("room", { roomId: req.params.room, firstname, lastname });
+// });
+
 app.get('/rooms/:room', (req, res) => {
-  const firstname = req.session.firstname;
-  const lastname = req.session.lastname;
-  console.log(firstname, lastname);
-  res.render("room", { roomId: req.params.room, firstname, lastname });
+  const email = req.session.email;
+  collection.findOne({ email }) // Assuming you have access to the MongoDB collection
+    .then(user => {
+      const firstname = user.firstname; // Assuming you have a "firstname" field in your user document
+      const lastname = user.lastname; // Assuming you have a "lastname" field in your user document
+      console.log(firstname, lastname);
+      res.render("room", { roomId: req.params.room, firstname, lastname });
+    })
+    .catch(error => {
+      console.log(error);
+      res.redirect("/login"); // Redirect to the login page if there's an error or user not found
+    });
 });
 
 const port = 3000;
