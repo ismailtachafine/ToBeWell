@@ -121,6 +121,10 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/home", (req, res) => {
+  res.render("home", { firstname: req.query.firstname, lastname: req.query.lastname });
+});
+
 const port = 3000;
 server.listen(process.env.PORT||port, () => {
   console.log(`Server running on Port: ${port}`);
