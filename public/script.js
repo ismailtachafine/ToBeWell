@@ -41,15 +41,9 @@ navigator.mediaDevices.getUserMedia({
     }
   });
   socket.on("createMessage", message => {
-    $("ul").append(`<li class="message"><b><%= firstname %> <%= lastname %></b><br/>${message}</li>`);
-    scrollToBottom()
-  })
-  // socket.on("createMessage", data => {
-  //   const { message, userData } = data;
-  //   console.log(userData); // Check if userData is printed correctly
-  //   $("ul").append(`<li class="message"><b>${data.lastName}</b><br/>${message}</li>`);
-  //   scrollToBottom();
-  // })
+    $("ul").append(`<li class="message"><b><%=${firstname}%> <%=${lastname}%></b><br/>${message.message}</li>`);
+    scrollToBottom();
+  });
 })
 
 socket.on('user-disconnected', userId => {
