@@ -120,7 +120,7 @@ app.post("/login", async (req, res) => {
 
 app.get("/home", async (req, res) => {
   try {
-    const user = await collection.findOne({ /* Add the condition to match the user */ });
+    const user = await collection.findOne({ email: req.body.email });
     if (!user) {
       res.render("login", { error: "User not found" });
     } else {
