@@ -91,9 +91,13 @@ app.post("/signup", async (req, res) => {
       const hashedPassword = await bcrypt.hash(data.password, saltRounds);
       data.password = hashedPassword; // Replace the original password with the hashed one
 
-      const userdata = await collection.insertMany(data);
+      // const userdata = await collection.insertMany(data);
+      // res.redirect("/login");
+      // console.log(userdata);
+
+      const newUser = new collection(data);
+      await newUser.save();
       res.redirect("/login");
-      console.log(userdata);
   }
 });
 
