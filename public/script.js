@@ -15,14 +15,6 @@ myVideo.muted = true;
 const peers = {}
 
 
-io.on('connection', socket => {
-  socket.on('createMessage', (firstname, lastname, message) => {
-    // Process the message and emit it back to the clients
-    io.emit('newMessage', { firstname, lastname, message });
-  });
-});
-
-
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
@@ -49,8 +41,9 @@ navigator.mediaDevices.getUserMedia({
       text.val('')
     }
   });
-  socket.on("createMessage", firstname, lastname, message => {
-    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
+  socket.on('newMessage', ({ firstname, lastname, message }) => {
+    const formattedMessage = `<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`;
+    $("ul").append(formattedMessage);
     scrollToBottom();
   });
 })
