@@ -12,6 +12,14 @@ const { v4: uuidV4 } = require('uuid')
 const bcrypt = require("bcrypt");
 const collection = require("./config");
 
+const session = require('express-session');
+
+app.use(session({
+  secret: '0007',
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.use('/peerjs', peerServer);
 
 app.set('view engine', 'ejs')
@@ -100,27 +108,27 @@ app.post("/signup", async (req, res) => {
 // Login user 
 app.post("/login", async (req, res) => {
   try {
-      const check = await collection.findOne({ email: req.body.email });
-      if (!check) {
-          res.render("login", { error: "Email cannot be found" });
-      }
+    const check = await collection.findOne({ email: req.body.email });
+    if (!check) {
+      res.render("login", { error: "Email cannot be found" });
+    }
 
-      const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
-      if (!isPasswordMatch) {
-          res.render("login", { error: "Wrong Password" });
-      }
-      else {
-          res.redirect("/home");
-      }
-  }
-  catch {
-      res.render("login", { error: "Wrong Details" });
+    const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
+    if (!isPasswordMatch) {
+      res.render("login", { error: "Wrong Password" });
+    } else {
+      // Store the user's email in the session
+      req.session.email = check.email;
+      res.redirect("/home");
+    }
+  } catch {
+    res.render("login", { error: "Wrong Details" });
   }
 });
 
 app.get("/home", async (req, res) => {
   try {
-    const user = await collection.findOne({ email: req.body.email });
+    const user = await collection.findOne({ email: req.session.email });
     if (!user) {
       res.render("login", { error: "User not found" });
     } else {
