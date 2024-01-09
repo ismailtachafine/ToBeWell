@@ -42,14 +42,10 @@ navigator.mediaDevices.getUserMedia({
     }
   });
 
-  socket.on("createMessage", ({firstname, lastname, message}) => {
+  socket.on("createMessage", (firstname, lastname, message) => {
     $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
     scrollToBottom();
   });
-  // socket.on("createMessage", (firstname, lastname, message) => {
-  //   $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
-  //   scrollToBottom();
-  // });
 })
 
 socket.on('user-disconnected', userId => {
