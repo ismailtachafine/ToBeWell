@@ -117,7 +117,7 @@ app.post("/login", async (req, res) => {
       }
       else {
           res.redirect("/home");
-          // res.render("home", { firstname: check.firstname, lastname: check.lastname });
+          res.render("home", { firstname: check.firstname, lastname: check.lastname });
       }
   }
   catch {
@@ -134,7 +134,7 @@ app.get("/home", async (req, res) => {
       res.render("login", { error: "User not found" });
     }
 
-    res.render("home", { firstname: user.firstname, lastname: user.lastname });
+    // res.render("home", { firstname: user.firstname, lastname: user.lastname });
   } catch (error) {
     // Handle any error that occurs during the database query
     console.error(error);
