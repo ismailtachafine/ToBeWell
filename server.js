@@ -34,9 +34,7 @@ app.get('/create_room/:new_room', (req, res) => {
   res.render('new_room', { roomId: req.params.new_room });
 });
 
-app.get('/rooms/:room', (req, res) => {
-  res.render("room", { roomId: req.params.room });
-});
+
 
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
@@ -94,10 +92,6 @@ app.post("/signup", async (req, res) => {
       const hashedPassword = await bcrypt.hash(data.password, saltRounds);
       data.password = hashedPassword; // Replace the original password with the hashed one
 
-      // const userdata = await collection.insertMany(data);
-      // res.redirect("/login");
-      // console.log(userdata);
-
       const newUser = new collection(data);
       await newUser.save();
       res.redirect("/login");
@@ -138,6 +132,12 @@ app.get("/home", async (req, res) => {
     console.error(error);
     res.render("error", { message: "An error occurred" });
   }
+});
+
+app.get('/rooms/:room', (req, res) => {
+  const firstname = req.session.firstname;
+  const lastname = req.session.lastname;
+  res.render("room", { roomId: req.params.room, firstname, lastname });
 });
 
 const port = 3000;

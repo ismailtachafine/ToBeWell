@@ -41,10 +41,11 @@ navigator.mediaDevices.getUserMedia({
     }
   });
   socket.on("createMessage", message => {
-    $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
-    // $("ul").append(`<li class="message"><b>${req.body.lastname}</b><br/>${message}</li>`);
-    scrollToBottom()
-  })
+    const firstname = message.firstname;
+    const lastname = message.lastname;
+    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message.message}</li>`);
+    scrollToBottom();
+  });
   // socket.on("createMessage", data => {
   //   const { message, userData } = data;
   //   console.log(userData); // Check if userData is printed correctly
