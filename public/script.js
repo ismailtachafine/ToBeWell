@@ -40,10 +40,8 @@ navigator.mediaDevices.getUserMedia({
       text.val('')
     }
   });
-  socket.on("createMessage", message => {
-    const firstname = '<%= firstname %>';
-    const lastname = '<%= lastname %>';
-    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
+  socket.on("createMessage", firstname, lastname, message => {
+    $("ul").append(`<li class="message"><b><%= firstname %> <%= lastname %></b><br/>${message}</li>`);
     scrollToBottom();
   });
 })
