@@ -86,6 +86,10 @@ app.post("/signup", async (req, res) => {
       const hashedPassword = await bcrypt.hash(data.password, saltRounds);
       data.password = hashedPassword; // Replace the original password with the hashed one
 
+      // const userdata = await collection.insertMany(data);
+      // res.redirect("/login");
+      // console.log(userdata);
+
       const newUser = new collection(data);
       await newUser.save();
       res.redirect("/login");
@@ -97,18 +101,22 @@ app.post("/login", async (req, res) => {
   try {
       const check = await collection.findOne({ email: req.body.email });
       if (!check) {
+          // res.send("Email cannot be found")
           res.render("login", { error: "Email cannot be found" });
       }
       // Compare the hashed password from the database with the plaintext password
       const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
       if (!isPasswordMatch) {
+          // res.send("Wrong Password");
           res.render("login", { error: "Wrong Password" });
       }
       else {
           res.redirect("/home");
+          res.render("home", { firstname: check.firstname, lastname: check.lastname });
       }
   }
   catch {
+      // res.send("Wrong Details");
       res.render("login", { error: "Wrong Details" });
   }
 });
