@@ -126,8 +126,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/home", (req, res) => {
-  res.render("home", { firstname: req.query.firstname, lastname: req.query.lastname });
+app.get("/home", async (req, res) => {
+  try {
+    const user = await collection.findOne({ /* Add the condition to match the user */ });
+    if (!user) {
+      // Handle the case when the user is not found
+      res.render("login", { error: "User not found" });
+    }
+
+    res.render("home", { firstname: user.firstname, lastname: user.lastname });
+  } catch (error) {
+    // Handle any error that occurs during the database query
+    console.error(error);
+    res.render("error", { message: "An error occurred" });
+  }
 });
 
 const port = 3000;
