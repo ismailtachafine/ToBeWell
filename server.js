@@ -97,26 +97,23 @@ app.post("/signup", async (req, res) => {
 });
 
 // Login user 
+// Login user 
 app.post("/login", async (req, res) => {
   try {
       const check = await collection.findOne({ email: req.body.email });
       if (!check) {
-          // res.send("Email cannot be found")
           res.render("login", { error: "Email cannot be found" });
       }
-      // Compare the hashed password from the database with the plaintext password
+
       const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
       if (!isPasswordMatch) {
-          // res.send("Wrong Password");
           res.render("login", { error: "Wrong Password" });
       }
       else {
           res.redirect("/home");
-          res.render("home", { firstname: check.firstname, lastname: check.lastname });
       }
   }
   catch {
-      // res.send("Wrong Details");
       res.render("login", { error: "Wrong Details" });
   }
 });
@@ -125,14 +122,11 @@ app.get("/home", async (req, res) => {
   try {
     const user = await collection.findOne({ /* Add the condition to match the user */ });
     if (!user) {
-      // Handle the case when the user is not found
       res.render("login", { error: "User not found" });
+    } else {
+      res.render("home", { firstname: user.firstname, lastname: user.lastname });
     }
-    // else{
-    //   res.render("home", { firstname: user.firstname, lastname: user.lastname });
-    // }
   } catch (error) {
-    // Handle any error that occurs during the database query
     console.error(error);
     res.render("error", { message: "An error occurred" });
   }
