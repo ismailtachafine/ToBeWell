@@ -41,9 +41,8 @@ navigator.mediaDevices.getUserMedia({
       text.val('')
     }
   });
-  socket.on('newMessage', ({ firstname, lastname, message }) => {
-    const formattedMessage = `<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`;
-    $("ul").append(formattedMessage);
+  socket.on("createMessage", firstname, lastname, message => {
+    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
     scrollToBottom();
   });
 })

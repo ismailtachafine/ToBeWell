@@ -14,12 +14,6 @@ const collection = require("./config");
 
 const session = require('express-session');
 
-io.on('connection', socket => {
-  socket.on('createMessage', ({ firstname, lastname, message }) => {
-    console.log(`Received message from ${firstname} ${lastname}: ${message}`);
-    io.emit('newMessage', { firstname, lastname, message });
-  });
-});
 
 app.use(session({
   secret: '0007',
