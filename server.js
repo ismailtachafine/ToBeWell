@@ -113,6 +113,7 @@ app.post("/login", async (req, res) => {
       }
       else {
           res.redirect("/home");
+          res.render("home", { firstname: check.firstname, lastname: check.lastname });
       }
   }
   catch {
