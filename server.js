@@ -42,10 +42,15 @@ io.on('connection', socket => {
     socket.join(roomId)
     socket.broadcast.to(roomId).emit('user-connected', userId);
     // messages
-    socket.on('message', (message) => {
-      //send message to the same room
-      io.to(roomId).emit('createMessage', message)
-  }); 
+// Inside the socket.on('message') block
+    socket.on('message', message => {
+      io.to(roomId).emit('createMessage', {
+        firstName: req.session.firstname,
+        lastName: req.session.lastname,
+        message: message
+      });
+    });
+
 
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);

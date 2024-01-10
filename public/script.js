@@ -68,11 +68,12 @@ navigator.mediaDevices.getUserMedia({
     }
   }); //ADDED
 
-  socket.on("createMessage", (data) => {
+  socket.on('createMessage', data => {
     const { firstName, lastName, message } = data;
     $("ul").append(`<li class="message"><b>${firstName} ${lastName}</b><br/>${message}</li>`);
     scrollToBottom();
   });
+  
 })
 
 socket.on('user-disconnected', userId => {
