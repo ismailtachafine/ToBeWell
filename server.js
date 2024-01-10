@@ -147,41 +147,41 @@ app.get("/home", async (req, res) => {
 //   res.render("room", { roomId: req.params.room, firstname, lastname });
 // });
 
-// app.get('/rooms/:room', (req, res) => {
-//   const email = req.session.email;
-//   collection.findOne({ email }) // Assuming you have access to the MongoDB collection
-//     .then(user => {
-//       const firstname = user.firstname; // Assuming you have a "firstname" field in your user document
-//       const lastname = user.lastname; // Assuming you have a "lastname" field in your user document
-//       console.log(firstname, lastname);
-//       res.render("room", { roomId: req.params.room, firstname, lastname });
-//     })
-//     .catch(error => {
-//       console.log(error);
-//       res.redirect("/login"); // Redirect to the login page if there's an error or user not found
-//     });
-// });
-
 app.get('/rooms/:room', (req, res) => {
   const email = req.session.email;
-  const firstname = req.session.firstname; // Access the first name from the session
-  const lastname = req.session.lastname; // Access the last name from the session
-
-  // Assuming you have access to the MongoDB collection
-  collection.findOne({ email })
+  collection.findOne({ email }) // Assuming you have access to the MongoDB collection
     .then(user => {
-      if (user) {
-        console.log(firstname, lastname);
-        res.render("room", { roomId: req.params.room, firstname, lastname });
-      } else {
-        res.redirect("/login"); // Redirect to the login page if the user is not found
-      }
+      const firstname = user.firstname; // Assuming you have a "firstname" field in your user document
+      const lastname = user.lastname; // Assuming you have a "lastname" field in your user document
+      console.log(firstname, lastname);
+      res.render("room", { roomId: req.params.room, firstname, lastname });
     })
     .catch(error => {
       console.log(error);
-      res.redirect("/login"); // Redirect to the login page if there's an error
+      res.redirect("/login"); // Redirect to the login page if there's an error or user not found
     });
-}); //ADDED
+});
+
+// app.get('/rooms/:room', (req, res) => {
+//   const email = req.session.email;
+//   const firstname = req.session.firstname; // Access the first name from the session
+//   const lastname = req.session.lastname; // Access the last name from the session
+
+//   // Assuming you have access to the MongoDB collection
+//   collection.findOne({ email })
+//     .then(user => {
+//       if (user) {
+//         console.log(firstname, lastname);
+//         res.render("room", { roomId: req.params.room, firstname, lastname });
+//       } else {
+//         res.redirect("/login"); // Redirect to the login page if the user is not found
+//       }
+//     })
+//     .catch(error => {
+//       console.log(error);
+//       res.redirect("/login"); // Redirect to the login page if there's an error
+//     });
+// }); //ADDED
 
 const port = 3000;
 server.listen(process.env.PORT||port, () => {
