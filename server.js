@@ -21,6 +21,13 @@ app.use(session({
   saveUninitialized: true
 }));
 
+io.on('connection', socket => {
+  socket.on('createMessage', (firstname, lastname, message) => {
+    // Process the message and emit it back to the clients
+    io.emit('newMessage', { firstname, lastname, message });
+  });
+});
+
 app.use('/peerjs', peerServer);
 
 app.set('view engine', 'ejs')
@@ -42,15 +49,10 @@ io.on('connection', socket => {
     socket.join(roomId)
     socket.broadcast.to(roomId).emit('user-connected', userId);
     // messages
-// Inside the socket.on('message') block
-    socket.on('message', message => {
-      io.to(roomId).emit('createMessage', {
-        firstName: req.session.firstname,
-        lastName: req.session.lastname,
-        message: message
-      });
-    });
-
+    socket.on('message', (message) => {
+      //send message to the same room
+      io.to(roomId).emit('createMessage', message)
+  }); 
 
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);
@@ -161,27 +163,6 @@ app.get('/rooms/:room', (req, res) => {
       res.redirect("/login"); // Redirect to the login page if there's an error or user not found
     });
 });
-
-// app.get('/rooms/:room', (req, res) => {
-//   const email = req.session.email;
-//   const firstname = req.session.firstname; // Access the first name from the session
-//   const lastname = req.session.lastname; // Access the last name from the session
-
-//   // Assuming you have access to the MongoDB collection
-//   collection.findOne({ email })
-//     .then(user => {
-//       if (user) {
-//         console.log(firstname, lastname);
-//         res.render("room", { roomId: req.params.room, firstname, lastname });
-//       } else {
-//         res.redirect("/login"); // Redirect to the login page if the user is not found
-//       }
-//     })
-//     .catch(error => {
-//       console.log(error);
-//       res.redirect("/login"); // Redirect to the login page if there's an error
-//     });
-// }); //ADDED
 
 const port = 3000;
 server.listen(process.env.PORT||port, () => {
