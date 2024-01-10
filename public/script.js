@@ -34,16 +34,31 @@ navigator.mediaDevices.getUserMedia({
   })
   // input value
   let text = $("input");
+
   // when press enter send message
+
+  // $('html').keydown(function (e) {
+  //   if (e.which == 13 && text.val().length !== 0) {
+  //     socket.emit('message', text.val());
+  //     text.val('')
+  //   }
+  // });
+
   $('html').keydown(function (e) {
     if (e.which == 13 && text.val().length !== 0) {
-      socket.emit('message', text.val());
+      const message = text.val();
+      socket.emit('message', {
+        firstName: firstName, // Modify this to access the first name from your session or other source
+        lastName: lastName, // Modify this to access the last name from your session or other source
+        message: message
+      });
       text.val('')
     }
-  });
+  }); //ADDED
 
-  socket.on("createMessage", (firstname, lastname, message) => {
-    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
+  socket.on("createMessage", (data) => {
+    const { firstName, lastName, message } = data;
+    $("ul").append(`<li class="message"><b>${firstName} ${lastName}</b><br/>${message}</li>`);
     scrollToBottom();
   });
 })
