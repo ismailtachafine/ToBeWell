@@ -34,7 +34,9 @@ navigator.mediaDevices.getUserMedia({
   })
   // input value
   let text = $("input");
+
   // when press enter send message
+
   // $('html').keydown(function (e) {
   //   if (e.which == 13 && text.val().length !== 0) {
   //     socket.emit('message', text.val());
@@ -42,22 +44,38 @@ navigator.mediaDevices.getUserMedia({
   //   }
   // });
 
-  // Function to send a message when the 'enter' key is pressed
-$('html').keydown(function (e) {
-  const text = $("input");
-  if (e.which == 13 && text.val().trim().length !== 0) {
-    const message = text.val().trim();
-    socket.emit('message', message);
-    text.val('');
-  }
-});
+  $('html').keydown(function (e) {
+    if (e.which == 13 && text.val().length !== 0) {
+      const message = text.val();
+      socket.emit('message', {
+        firstName: firstName, // Modify this to access the first name from your session or other source
+        lastName: lastName, // Modify this to access the last name from your session or other source
+        message: message
+      });
+      text.val('')
+    }
+  }); //ADDED
 
-  // Replace the existing code for receiving and displaying messages
-  socket.on("createMessage", (firstname, lastname, message) => {
-    const formattedName = firstname && lastname ? `${firstname} ${lastname}` : "Unknown User";
-    $("ul").append(`<li class="message"><b>${formattedName}</b>: ${message}</li>`);
+  // $('html').keydown(function (e) {
+  //   if (e.which == 13 && text.val().length !== 0) { // Check for Enter key (e.which == 13)
+  //     const message = text.val();
+  //     socket.emit('message', {
+  //       firstName: '<%= firstname %>', // Access the first name from the template variable
+  //       lastName: '<%= lastname %>', // Access the last name from the template variable
+  //       message: message
+  //     });
+  //     text.val('')
+  //   }
+  // }); //ADDED
+
+  socket.on('createMessage', data => {
+    const { firstName, lastName, message } = data;
+    console.log(firstName, lastName, message); // Check if data is received properly in the console
+    $("ul").append(`<li class="message"><b>${firstName} ${lastName}</b><br/>${message}</li>`);
     scrollToBottom();
   });
+  
+  
 })
 
 socket.on('user-disconnected', userId => {
