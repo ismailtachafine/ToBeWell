@@ -44,35 +44,37 @@ navigator.mediaDevices.getUserMedia({
   //   }
   // });
 
-  // $('html').keydown(function (e) {
-  //   if (e.which == 13 && text.val().length !== 0) {
-  //     const message = text.val();
-  //     socket.emit('message', {
-  //       firstName: firstName, // Modify this to access the first name from your session or other source
-  //       lastName: lastName, // Modify this to access the last name from your session or other source
-  //       message: message
-  //     });
-  //     text.val('')
-  //   }
-  // }); //ADDED
-
   $('html').keydown(function (e) {
-    if (e.which == 13 && text.val().length !== 0) { // Check for Enter key (e.which == 13)
+    if (e.which == 13 && text.val().length !== 0) {
       const message = text.val();
       socket.emit('message', {
-        firstName: '<%= firstname %>', // Access the first name from the template variable
-        lastName: '<%= lastname %>', // Access the last name from the template variable
+        firstName: firstName, // Modify this to access the first name from your session or other source
+        lastName: lastName, // Modify this to access the last name from your session or other source
         message: message
       });
       text.val('')
     }
   }); //ADDED
 
+  // $('html').keydown(function (e) {
+  //   if (e.which == 13 && text.val().length !== 0) { // Check for Enter key (e.which == 13)
+  //     const message = text.val();
+  //     socket.emit('message', {
+  //       firstName: '<%= firstname %>', // Access the first name from the template variable
+  //       lastName: '<%= lastname %>', // Access the last name from the template variable
+  //       message: message
+  //     });
+  //     text.val('')
+  //   }
+  // }); //ADDED
+
   socket.on('createMessage', data => {
     const { firstName, lastName, message } = data;
+    console.log(firstName, lastName, message); // Check if data is received properly in the console
     $("ul").append(`<li class="message"><b>${firstName} ${lastName}</b><br/>${message}</li>`);
     scrollToBottom();
   });
+  
   
 })
 
