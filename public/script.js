@@ -35,16 +35,27 @@ navigator.mediaDevices.getUserMedia({
   // input value
   let text = $("input");
   // when press enter send message
-  $('html').keydown(function (e) {
-    if (e.which == 13 && text.val().length !== 0) {
-      socket.emit('message', text.val());
-      text.val('')
-    }
-  });
+  // $('html').keydown(function (e) {
+  //   if (e.which == 13 && text.val().length !== 0) {
+  //     socket.emit('message', text.val());
+  //     text.val('')
+  //   }
+  // });
 
+  // Function to send a message when the 'enter' key is pressed
+$('html').keydown(function (e) {
+  const text = $("input");
+  if (e.which == 13 && text.val().trim().length !== 0) {
+    const message = text.val().trim();
+    socket.emit('message', message);
+    text.val('');
+  }
+});
+
+  // Replace the existing code for receiving and displaying messages
   socket.on("createMessage", (firstname, lastname, message) => {
-    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
-    console.log(firstname, lastname, message);
+    const formattedName = firstname && lastname ? `${firstname} ${lastname}` : "Unknown User";
+    $("ul").append(`<li class="message"><b>${formattedName}</b>: ${message}</li>`);
     scrollToBottom();
   });
 })
