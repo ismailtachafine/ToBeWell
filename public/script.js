@@ -60,8 +60,8 @@ navigator.mediaDevices.getUserMedia({
     if (e.which == 13 && text.val().length !== 0) { // Check for Enter key (e.which == 13)
       const message = text.val();
       socket.emit('message', {
-        firstName: '<%- firstname %>', // Access the first name from the template variable
-        lastName: '<%- lastname %>', // Access the last name from the template variable
+        firstName: '<%= firstname %>', // Access the first name from the template variable
+        lastName: '<%= lastname %>', // Access the last name from the template variable
         message: message
       });
       text.val('')
