@@ -17,14 +17,27 @@ const session = require('express-session');
 
 app.use(session({
   secret: '0007',
-  resave: false,
+  resave: true,
   saveUninitialized: true
 }));
 
 io.on('connection', socket => {
-  socket.on('createMessage', (firstname, lastname, message) => {
-    // Process the message and emit it back to the clients
-    io.emit('newMessage', { firstname, lastname, message });
+  socket.on('join-room', (roomId, userId) => {
+    const { firstName, lastName } = socket.handshake.session.user; // Access first name and last name from session
+    socket.join(roomId);
+    socket.to(roomId).broadcast.emit('user-connected', userId);
+
+    socket.on('message', message => {
+      io.to(roomId).emit('message', {
+        firstName: firstName,
+        lastName: lastName,
+        text: message,
+      });
+    });
+
+    socket.on('disconnect', () => {
+      socket.to(roomId).broadcast.emit('user-disconnected', userId);
+    });
   });
 });
 
@@ -46,12 +59,23 @@ app.get('/create_room/:new_room', (req, res) => {
 
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
+    // Store the user's firstname and lastname in the session
+    socket.handshake.session.firstName = firstName;
+    socket.handshake.session.lastName = lastName;
+    socket.handshake.session.save();
+
+    // Join the room
     socket.join(roomId)
     socket.broadcast.to(roomId).emit('user-connected', userId);
     // messages
-    socket.on('message', (message) => {
-      //send message to the same room
-      io.to(roomId).emit('createMessage', message)
+   // Listen for 'sendMessage' event
+    socket.on('sendMessage', ({ message }) => {
+      // Get the user's firstname and lastname from the session
+      const firstName = socket.handshake.session.firstName;
+      const lastName = socket.handshake.session.lastName;
+
+      // Emit the message to all connected clients
+      io.to(roomId).emit('message', { firstName, lastName, message });
   }); 
 
     socket.on('disconnect', () => {

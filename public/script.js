@@ -42,8 +42,11 @@ navigator.mediaDevices.getUserMedia({
     }
   });
 
-  socket.on("createMessage", (firstname, lastname, message) => {
-    $("ul").append(`<li class="message"><b>${firstname} ${lastname}</b><br/>${message}</li>`);
+  socket.on('message', message => {
+    const { firstName, lastName } = message; // Access first name and last name from the message object
+    const messageElement = document.createElement('li');
+    messageElement.innerHTML = `<b>${firstName} ${lastName}:</b> ${message.text}`;
+    document.querySelector('.messages').appendChild(messageElement);
     scrollToBottom();
   });
 })
