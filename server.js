@@ -21,13 +21,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-io.on('connection', socket => {
-  socket.on('createMessage', (firstname, lastname, message) => {
-    // Process the message and emit it back to the clients
-    io.emit('newMessage', { firstname, lastname, message });
-  });
-});
-
 app.use('/peerjs', peerServer);
 
 app.set('view engine', 'ejs')
