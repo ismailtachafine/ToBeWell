@@ -1,0 +1,148 @@
+<!-- views/prediction.ejs -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Prediction</title>
+</head>
+<body>
+    <h1>Emotion Prediction</h1>
+
+    <form action="/upload_predict" method="post" enctype="multipart/form-data">
+        <label for="video">Select a video:</label>
+        <input type="file" name="video" accept="video/*" capture="camera">
+        <button type="submit">Upload & Predict</button>
+    </form>
+
+    <video id="videoPlayer" width="640" height="480" controls></video>
+    <div id="emotionResult"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const videoPlayer = document.getElementById('videoPlayer');
+        const emotionResult = document.getElementById('emotionResult');
+
+        // Event listener for the form submission
+        $('form').submit(function(e) {
+            e.preventDefault(); // Prevent default form submission
+            const formData = new FormData(this);
+
+            // Send video to server for emotion analysis
+            $.ajax({
+                url: '/upload_predict',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    console.log(response);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            // Reset emotion result
+            emotionResult.innerHTML = '';
+        });
+
+        socket.on('emotion-result', function(emotion) {
+            emotionResult.innerHTML = `<p>Dominant Emotion: ${emotion}</p>`;
+        });
+    </script>
+</body>
+</html>
+
+ -->
+
+ <!-- views/prediction.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Prediction</title>
+</head>
+<body>
+    <h1>Emotion Prediction</h1>
+
+    <form action="/upload_predict" method="post" enctype="multipart/form-data">
+        <label for="video">Select a video:</label>
+        <input type="file" name="video" accept="video/*" capture="camera">
+        <button type="submit">Upload & Predict</button>
+    </form>
+
+    <video id="videoPlayer" width="640" height="480" controls></video>
+    <div id="emotionResult"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const videoPlayer = document.getElementById('videoPlayer');
+        const emotionResult = document.getElementById('emotionResult');
+
+        // Event listener for the form submission
+        $('form').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+            const formData = new FormData(this);
+
+            // Send video to server for emotion analysis
+            $.ajax({
+                url: '/upload_predict',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+
+                    // Update the video player source
+                    videoPlayer.src = URL.createObjectURL(formData.get('video'));
+
+                    // Display bounding boxes and emotions
+                    displayEmotionResults(response);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            // Reset emotion result
+            emotionResult.innerHTML = '';
+        });
+
+        socket.on('emotion-result', function (emotion) {
+            emotionResult.innerHTML = `<p>Dominant Emotion: ${emotion}</p>`;
+        });
+
+        function displayEmotionResults(result) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const video = document.getElementById('videoPlayer');
+
+            // Set canvas dimensions to match the video
+            canvas.width = video.width;
+            canvas.height = video.height;
+
+            // Draw the video frame on the canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Draw bounding boxes and emotions
+            result.forEach(face => {
+                const { x, y, w, h } = face.region;
+                ctx.beginPath();
+                ctx.rect(x, y, w, h);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'red';
+                ctx.fillStyle = 'red';
+                ctx.stroke();
+                ctx.fillText(face.dominant_emotion, x, y - 5);
+            });
+            
+
+            // Append the canvas to the document
+            document.body.appendChild(canvas);
+        }
+    </script>
+</body>
+</html>
