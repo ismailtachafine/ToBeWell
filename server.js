@@ -169,54 +169,54 @@ app.get('/rooms/:room', (req, res) => {
     });
 });
 
-// Add this route in your existing server code
-app.get('/prediction', (req, res) => {
-  res.render('prediction');
-});
+// // Add this route in your existing server code
+// app.get('/prediction', (req, res) => {
+//   res.render('prediction');
+// });
 
-const axios = require('axios');
-const FormData = require('form-data');
+// const axios = require('axios');
+// const FormData = require('form-data');
 
-app.post('/upload_predict', async (req, res) => {
-  try {
-    // Check if the request contains files
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
+// app.post('/upload_predict', async (req, res) => {
+//   try {
+//     // Check if the request contains files
+//     if (!req.files || Object.keys(req.files).length === 0) {
+//       return res.status(400).send('No files were uploaded.');
+//     }
 
-    // Get the video file from the request
-    const videoFile = req.files.video;
+//     // Get the video file from the request
+//     const videoFile = req.files.video;
 
-    // Create FormData and append the video file
-    const formData = new FormData();
-    formData.append('video', videoFile.data, { filename: videoFile.name });
+//     // Create FormData and append the video file
+//     const formData = new FormData();
+//     formData.append('video', videoFile.data, { filename: videoFile.name });
 
-    // Send video to Python server for emotion analysis
-    const pythonServerUrl = 'http://localhost:5000'; // Replace with the actual URL of your Python server
-    const response = await axios.post(`${pythonServerUrl}/analyze_emotion`, formData, {
-      headers: {
-        ...formData.getHeaders(),
-      },
-    });
+//     // Send video to Python server for emotion analysis
+//     const pythonServerUrl = 'http://localhost:5000'; // Replace with the actual URL of your Python server
+//     const response = await axios.post(`${pythonServerUrl}/analyze_emotion`, formData, {
+//       headers: {
+//         ...formData.getHeaders(),
+//       },
+//     });
 
-    // Extract emotion result from the response
-    const emotionResult = response.data.emotion;
+//     // Extract emotion result from the response
+//     const emotionResult = response.data.emotion;
 
-    // Assuming you have a WebSocket connection set up
-    // Emit the emotion result to the client
-    
-    io.emit('emotion-result', emotionResult);
+//     // Assuming you have a WebSocket connection set up
+//     // Emit the emotion result to the client
 
-    // Respond to the client with a success message
-    res.send('Emotion analysis complete');
-  } catch (error) {
-    // Log the error for debugging purposes
-    console.error('Error during emotion analysis:', error);
+//     io.emit('emotion-result', emotionResult);
 
-    // Respond to the client with an internal server error message
-    res.status(500).send('Internal Server Error');
-  }
-});
+//     // Respond to the client with a success message
+//     res.send('Emotion analysis complete');
+//   } catch (error) {
+//     // Log the error for debugging purposes
+//     console.error('Error during emotion analysis:', error);
+
+//     // Respond to the client with an internal server error message
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
 
 
 
